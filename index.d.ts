@@ -1,3 +1,6 @@
 import { Plugin } from 'vite'
 
-declare function ViteTips(): Plugin
+declare module 'vite-plugin-tips' {
+  export function ViteTips(): Plugin
+  export default function ViteTips(): Plugin
+}
