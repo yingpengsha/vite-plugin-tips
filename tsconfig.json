@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2015",
+    "lib": ["ESNext", "DOM"],
+    "types": ["node"],
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test"
+  ]
+}
