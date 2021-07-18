@@ -2,7 +2,7 @@ name: Release
 
 on:
   workflow_dispatch:
-    tag:
+    tags:
       - 'v*'
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '14'
           registry-url: https://registry.npmjs.org/
-      - run: npm install
+      - run: npm ci
       - run: npm run build
       - run: npm publish --access public
         env:
