@@ -57,14 +57,14 @@ export class Tip extends HTMLElement {
 }
 
 export function createTip(option: TipOptions) {
-  // clearTips()
+  clearTips()
   document.body.appendChild(new Tip(option))
 }
 
 export function clearTips() {
   document
     .querySelectorAll(COMPONENT_ID)
-    // .forEach(n => (n as Tip).close())
+    .forEach(n => (n as Tip).close())
 }
 
 customElements.define(COMPONENT_ID, Tip)
