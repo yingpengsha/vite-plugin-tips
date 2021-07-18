@@ -1,4 +1,5 @@
 import { clearTips, createTip } from './overlay'
+import { errorStyle, successStyle, warnStyle } from './styles'
 
 declare const __HMR_PROTOCOL__: string
 declare const __HMR_HOSTNAME__: string
@@ -7,37 +8,78 @@ declare const __HMR_PORT__: string
 const socketProtocol = __HMR_PROTOCOL__ || (location.protocol === 'https:' ? 'wss' : 'ws')
 const socketHost = `${__HMR_HOSTNAME__ || location.hostname}:${__HMR_PORT__}`
 const socket = new WebSocket(`${socketProtocol}://${socketHost}`, 'vite-hmr')
+const rawConsoleLog = console.log
+const rawConsoleError = console.error
 
 createTip({
   message: '[vite] connecting...',
-  style: {
-    backgroundColor: '#ffe58f',
-    borderBottom: '1px solid #ffc400',
-  },
+  style: warnStyle,
 })
 
 socket.addEventListener('close', async({ wasClean }) => {
   if (wasClean) return
   createTip({
     message: '[vite] server connection lost. polling for restart...',
-    style: {
-      backgroundColor: '#ffccc7',
-      borderBottom: '1px solid #da5e52',
-    },
+    style: errorStyle,
   })
 })
 
 socket.addEventListener('message', ({ data }) => {
-  if (JSON.parse(data).type === 'connected') {
+  switch (JSON.parse(data).type) {
+    case 'connected':
+      createTip({
+        message: '[vite] connected...',
+        style: successStyle,
+      })
+      setTimeout(() => {
+        clearTips()
+      }, 1000)
+      break
+    case 'update':
+      createTip({
+        message: '[vite] updating...',
+        style: warnStyle,
+      })
+      console.log = fakeConsoleLog
+      console.error = fakeConsoleError
+      break
+    case 'error':
+      clearTips()
+      restoreConsole()
+      break
+    default:
+      break
+  }
+})
+
+function fakeConsoleLog(...data: any[]): void {
+  if (typeof data?.[0] === 'string' && (data[0].startsWith('[vite] hot updated') || data[0].startsWith('[vite] css hot updated'))) {
     createTip({
-      message: '[vite] connected...',
-      style: {
-        backgroundColor: '#b7eb8f',
-        borderBottom: '1px solid #7cce3d',
-      },
+      message: data[0],
+      style: successStyle,
     })
+    restoreConsole()
     setTimeout(() => {
       clearTips()
     }, 1000)
   }
-})
+  rawConsoleLog.apply(console, data)
+}
+
+function fakeConsoleError(...data: any[]): void {
+  const isHMRFailed = typeof data?.[0] === 'string' && data[0].startsWith('[hmr] Failed to reload')
+  const isErrorInFetch = data?.[0] instanceof Error && data[0].stack?.match('fetchUpdate')
+  if (isHMRFailed || isErrorInFetch) {
+    createTip({
+      message: data[0]?.stack || data[0],
+      style: errorStyle,
+    })
+    restoreConsole()
+  }
+  rawConsoleError.apply(console, data)
+}
+
+function restoreConsole() {
+  console.log = rawConsoleLog
+  console.error = rawConsoleError
+}
