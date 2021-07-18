@@ -1,20 +1,25 @@
 import path from 'path'
-import { Plugin, ResolvedConfig, normalizePath } from 'vite'
-import { CLIENT_ENTRY, CLIENT_FILE_ID } from './constants'
+import { Plugin, ResolvedConfig } from 'vite'
+import { CLIENT_FILE_ID, CLIENT_RP_ENTRY } from './constants'
 
 export function ViteTips(): Plugin {
   let config: ResolvedConfig
   return {
     name: 'vite-plugin-tips',
+    config: () => ({
+      optimizeDeps: {
+        exclude: ['vite-plugin-tips'],
+      },
+    }),
     configResolved(resolvedConfig) {
       config = resolvedConfig
     },
     load(id) {
       if (id.endsWith(CLIENT_FILE_ID))
-        return 'import \'vite-plugin-tips/dist/client\''
+        return `import '${CLIENT_RP_ENTRY}'`
     },
     transform(code, id) {
-      if (id === normalizePath(CLIENT_ENTRY)) {
+      if (id.match(CLIENT_RP_ENTRY)) {
         let options = config.server.hmr
         options = options && typeof options !== 'boolean' ? options : {}
         const host = options.host || null

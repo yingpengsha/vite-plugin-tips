@@ -31,6 +31,7 @@ export interface TipOptions {
   style?: Partial<CSSStyleDeclaration>
 }
 
+export const COMPONENT_ID = 'vite-plugin-tip'
 export class Tip extends HTMLElement {
   root: ShadowRoot
 
@@ -55,16 +56,15 @@ export class Tip extends HTMLElement {
   }
 }
 
-export const COMPONENT_ID = 'vite-plugin-tip'
-customElements.define(COMPONENT_ID, Tip)
-
 export function createTip(option: TipOptions) {
-  clearTips()
+  // clearTips()
   document.body.appendChild(new Tip(option))
 }
 
 export function clearTips() {
   document
     .querySelectorAll(COMPONENT_ID)
-    .forEach(n => (n as Tip).close())
+    // .forEach(n => (n as Tip).close())
 }
+
+customElements.define(COMPONENT_ID, Tip)

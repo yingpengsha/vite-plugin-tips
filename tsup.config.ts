@@ -9,9 +9,6 @@ export const tsup: Options = {
     'dist',
     'examples',
   ],
-  external: [
-    'vite-plugin-tips/dist/client/index.mjs',
-  ],
   entryPoints: [
     'src/index.ts',
     'src/client/index.ts',

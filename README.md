@@ -1,6 +1,8 @@
 # vite-plugin-tips
 
-- Provide friendlier service status tips
+Provide friendlier service status tips
+
+![screenshot](public/screenshot.jpg)
 
 ## Usage
 
