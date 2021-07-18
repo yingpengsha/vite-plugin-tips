@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-tips",
   "version": "0.0.1",
-  "description": "Page tips for vite",
+  "description": "Provide better development server status tips on the page",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "index.d.ts",
