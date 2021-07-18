@@ -23,3 +23,7 @@ export default {
   ]
 }
 ```
+
+## License
+
+[MIT](LICENSE)
