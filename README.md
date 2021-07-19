@@ -1,3 +1,5 @@
+> This project has been included in [awesome-vite](https://github.com/vitejs/awesome-vite).
+
 # vite-plugin-tips
 
 Provide better development server status tips on the page.
