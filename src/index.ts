@@ -1,9 +1,16 @@
 import path from 'path'
 import { Plugin, ResolvedConfig } from 'vite'
 import { CLIENT_FILE_ID, CLIENT_RP_ENTRY } from './constants'
+import { ViteTipsOptions } from './types'
 
-export function ViteTips(): Plugin {
+export function ViteTips(rawOptions: Partial<ViteTipsOptions> = {}): Plugin {
   let config: ResolvedConfig
+  const options: ViteTipsOptions = {
+    connect: rawOptions.connect ?? true,
+    update: rawOptions.update ?? true,
+    disconnect: rawOptions.disconnect ?? true,
+  }
+
   return {
     name: 'vite-plugin-tips',
     config: () => ({
@@ -20,10 +27,10 @@ export function ViteTips(): Plugin {
     },
     transform(code, id) {
       if (id.match(CLIENT_RP_ENTRY)) {
-        let options = config.server.hmr
-        options = options && typeof options !== 'boolean' ? options : {}
-        const host = options.host || null
-        const protocol = options.protocol || null
+        let HMROptions = config.server.hmr
+        HMROptions = HMROptions && typeof HMROptions !== 'boolean' ? HMROptions : {}
+        const host = HMROptions.host || null
+        const protocol = HMROptions.protocol || null
         let port
         if (config.server.middlewareMode) {
           if (typeof config.server.hmr === 'object')
@@ -32,11 +39,11 @@ export function ViteTips(): Plugin {
           port = String(port || 24678)
         }
         else {
-          port = String(options.port || config.server.port!)
+          port = String(HMROptions.port || config.server.port!)
         }
         let hmrBase = config.base
-        if (options.path)
-          hmrBase = path.posix.join(hmrBase, options.path)
+        if (HMROptions.path)
+          hmrBase = path.posix.join(hmrBase, HMROptions.path)
 
         if (hmrBase !== '/')
           port = path.posix.normalize(`${port}${hmrBase}`)
@@ -45,6 +52,9 @@ export function ViteTips(): Plugin {
           .replace('__HMR_PROTOCOL__', JSON.stringify(protocol))
           .replace('__HMR_HOSTNAME__', JSON.stringify(host))
           .replace('__HMR_PORT__', JSON.stringify(port))
+          .replace('__TIPS_OPTION_CONNECT__', Boolean(options.connect).toString())
+          .replace('__TIPS_OPTION_UPDATE__', Boolean(options.update).toString())
+          .replace('__TIPS_OPTION_DISCONNECT__', Boolean(options.disconnect).toString())
       }
     },
     transformIndexHtml: {
