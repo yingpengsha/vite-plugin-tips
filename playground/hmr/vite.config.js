@@ -1,5 +1,5 @@
-
 import tips from 'vite-plugin-tips'
+
 /**
  * @type {import('vite').UserConfig}
  */

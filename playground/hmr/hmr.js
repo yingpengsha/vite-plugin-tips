@@ -30,7 +30,7 @@ if (import.meta.hot) {
   })
 
   import.meta.hot.dispose(() => {
-    console.log(`foo was:`, foo)
+    console.log('foo was:', foo)
   })
 
   import.meta.hot.on('vite:beforeUpdate', (event) => {
