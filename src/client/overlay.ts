@@ -10,7 +10,7 @@ const template = /** html */ `
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 8px #f0f1f2;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
   color: #000000d9;
 }
 .close {
