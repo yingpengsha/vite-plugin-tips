@@ -3,7 +3,6 @@
   "version": "1.0.2",
   "description": "Provide better development server status tips on the page",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "index.d.ts",
   "files": [
     "dist",
@@ -11,7 +10,9 @@
   ],
   "scripts": {
     "dev": "tsup --watch --sourcemap",
-    "build": "tsup"
+    "build": "tsup",
+    "prepare": "pnpm run build",
+    "release": "pnpm run build && bump --commit --tag --push && pnpm publish"
   },
   "repository": {
     "type": "git",
@@ -25,18 +26,19 @@
   "license": "MIT",
   "bugs": "https://github.com/yingpengsha/vite-plugin-tips/issues",
   "homepage": "https://github.com/yingpengsha/vite-plugin-tips#readme",
-  "peerDependencies": {
-    "vite": "^2.0.0"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.7.0",
     "@antfu/ni": "^0.7.0",
+    "@jsdevtools/version-bump-prompt": "^6.1.0",
     "@types/node": "^16.3.2",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "eslint": "^7.30.0",
     "esno": "^0.7.3",
     "tsup": "^4.11.2",
     "typescript": "^4.3.5",
-    "vite": "^2.4.2"
+    "vite": "^2.6.14"
+  },
+  "peerDependencies": {
+    "vite": "^2.6.14"
   }
 }

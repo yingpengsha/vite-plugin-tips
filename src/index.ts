@@ -77,5 +77,3 @@ export function ViteTips(rawOptions: Partial<ViteTipsOptions> = {}): Plugin {
     },
   }
 }
-
-export default ViteTips

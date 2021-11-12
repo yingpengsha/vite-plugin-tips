@@ -21,7 +21,7 @@ $ npm install vite-plugin-tips -D
 ### configuration
 
 ```js
-import viteTips from 'vite-plugin-tips'
+import { viteTips } from 'vite-plugin-tips'
 
 export default {
   plugins: [
