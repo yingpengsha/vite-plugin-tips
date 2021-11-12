@@ -7,7 +7,7 @@ export const tsup: Options = {
   format: ['cjs', 'esm'],
   ignoreWatch: [
     'dist',
-    'examples',
+    'playground',
   ],
   entryPoints: [
     'src/index.ts',
