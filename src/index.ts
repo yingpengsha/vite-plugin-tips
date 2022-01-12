@@ -59,19 +59,22 @@ export function ViteTips(rawOptions: Partial<ViteTipsOptions> = {}): Plugin {
     },
     transformIndexHtml: {
       enforce: 'pre',
-      transform(html) {
+      transform(html, ctx) {
+        const isDev = ctx.server
         return {
           html,
-          tags: [
-            {
-              tag: 'script',
-              attrs: {
-                type: 'module',
-                src: CLIENT_FILE_ID,
+          tags: isDev
+            ? [
+              {
+                tag: 'script',
+                attrs: {
+                  type: 'module',
+                  src: CLIENT_FILE_ID,
+                },
+                injectTo: 'head-prepend',
               },
-              injectTo: 'head-prepend',
-            },
-          ],
+            ]
+            : [],
         }
       },
     },
